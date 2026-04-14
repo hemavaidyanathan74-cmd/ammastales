@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Katha — Ganesha and the Moon</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #E8670A;
+    --gold: #F5C842;
+    --night: #1A1A4E;
+    --deep-purple: #6B3FA0;
+    --teal: #1D9E75;
+    --pink: #E05C8A;
+    --cream: #FFF8F0;
+    --white: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--night);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ── HOME SCREEN ── */
+  #home {
+    background: var(--night);
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #home::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: var(--deep-purple);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+
+  #home::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 280px; height: 280px;
+    background: var(--saffron);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+
+  .home-stars {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.2; transform: scale(0.8); }
+    to   { opacity: 1;   transform: scale(1.2); }
+  }
+
+  .katha-logo {
+    font-family: 'Lora', serif;
+    font-size: 52px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .katha-tagline {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-card {
+    background: var(--deep-purple);
+    border-radius: 24px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    position: relative;
+    z-index: 1;
+    border: 1.5px solid rgba(245,200,66,0.2);
+    margin-bottom: 24px;
+  }
+
+  .story-card-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .story-card-title {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .story-card-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 20px;
+  }
+
+  .progress-bar-bg {
+    background: rgba(255,255,255,0.15);
+    border-radius: 6px;
+    height: 6px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    background: var(--gold);
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--night);
+    border: none;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.1s, opacity 0.1s;
+  }
+
+  .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
+
+  .avatar-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 12px 16px;
+    width: 100%;
+    max-width: 360px;
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .avatar-circle {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #F5C4B3;
+    border: 2px solid #F0997B;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .avatar-text { flex: 1; }
+  .avatar-name { font-size: 14px; font-weight: 700; color: #fff; }
+  .avatar-sub  { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+  .avatar-status {
+    background: var(--teal);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* ── STORY SCREEN ── */
+  #story { background: var(--night); }
+
+  .story-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .btn-back {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .scene-counter {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 700;
+  }
+
+  .scene-dots {
+    display: flex; gap: 5px;
+  }
+
+  .scene-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .scene-dot.active {
+    background: var(--gold);
+    transform: scale(1.3);
+  }
+
+  .scene-dot.done {
+    background: var(--teal);
+  }
+
+  /* Scene image area */
+  .scene-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+
+  .scene-image {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .scene-image-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 60px;
+    background: var(--deep-purple);
+  }
+
+  /* Narration strip */
+  .narration-strip {
+    background: var(--deep-purple);
+    padding: 16px 20px 12px;
+  }
+
+  .narration-avatar-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+
+  .narration-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #F5C4B3;
+    border: 2px solid #F0997B;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .narration-who {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+  }
+
+  .narration-text {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    color: #fff;
+    line-height: 1.6;
+  }
+
+  .narration-text .word {
+    display: inline;
+    transition: background 0.15s, color 0.15s;
+    border-radius: 4px;
+    padding: 0 1px;
+    cursor: pointer;
+  }
+
+  .narration-text .word.highlight {
+    background: var(--gold);
+    color: var(--night);
+  }
+
+  .narration-controls {
+    display: flex; align-items: center; gap: 12px; margin-top: 12px;
+  }
+
+  .btn-play {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.1s;
+  }
+
+  .btn-play:active { transform: scale(0.93); }
+
+  .btn-play svg { width: 18px; height: 18px; }
+
+  .narration-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+  }
+
+  /* Activity pills */
+  .activity-section {
+    padding: 16px 20px;
+    flex: 1;
+  }
+
+  .activity-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .activity-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .pill {
+    border: none;
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    position: relative;
+  }
+
+  .pill:active { transform: scale(0.95); }
+  .pill.done::after {
+    content: '✓';
+    position: absolute;
+    top: -4px; right: -4px;
+    width: 16px; height: 16px;
+    background: var(--teal);
+    border-radius: 50%;
+    font-size: 9px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+
+  .pill-talk   { background: var(--gold);   color: var(--night); }
+  .pill-play   { background: #5DCAA5;        color: #04342C; }
+  .pill-read   { background: var(--saffron); color: #fff; }
+  .pill-ask    { background: #AFA9EC;        color: #26215C; }
+  .pill-retell { background: var(--pink);    color: #fff; }
+
+  .scene-nav {
+    display: flex;
+    gap: 12px;
+    padding: 0 20px 32px;
+  }
+
+  .btn-nav {
+    flex: 1;
+    padding: 14px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-nav.next { background: var(--deep-purple); border-color: var(--deep-purple); }
+  .btn-nav:active { opacity: 0.8; }
+
+  /* ── ACTIVITY SCREENS ── */
+  .activity-screen {
+    background: var(--cream);
+    flex-direction: column;
+  }
+
+  .act-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .act-header-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--night);
+  }
+
+  .act-body {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* TALK activity */
+  .talk-prompt-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid #9FE1CB;
+    text-align: center;
+  }
+
+  .talk-prompt-label {
+    font-size: 11px;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .talk-prompt-text {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    color: var(--night);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .nani-hint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f5f3ef;
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+  }
+
+  .nani-hint-text {
+    font-size: 13px;
+    color: #555;
+    font-style: italic;
+  }
+
+  .mic-wrap { text-align: center; }
+
+  .btn-mic {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--teal);
+    border: 4px solid #9FE1CB;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    transition: transform 0.1s, box-shadow 0.2s;
+  }
+
+  .btn-mic.recording {
+    background: var(--pink);
+    border-color: #ED93B1;
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(224,92,138,0.4); }
+    50%       { box-shadow: 0 0 0 12px rgba(224,92,138,0); }
+  }
+
+  .mic-label { font-size: 13px; color: var(--teal); margin-top: 8px; font-weight: 700; }
+
+  .feedback-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    border: 2px solid var(--gold);
+    display: none;
+  }
+
+  .feedback-box.show { display: block; }
+  .feedback-text { font-size: 15px; font-weight: 700; color: var(--night); }
+
+  /* PLAY activity - word match */
+  .play-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .play-image-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 12px;
+    text-align: center;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.1s;
+  }
+
+  .play-image-card:active { transform: scale(0.97); }
+  .play-image-card.selected { border-color: var(--deep-purple); }
+  .play-image-card.correct  { border-color: var(--teal); background: #e8f5ee; }
+  .play-image-card.wrong    { border-color: #E24B4A; background: #fcebeb; }
+
+  .play-card-emoji { font-size: 40px; margin-bottom: 8px; }
+  .play-card-label { font-size: 14px; font-weight: 700; color: var(--night); }
+
+  .play-word-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+
+  .play-word-btn {
+    background: var(--deep-purple);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+
+  .play-word-btn:active { transform: scale(0.95); }
+  .play-word-btn.used { opacity: 0.35; pointer-events: none; }
+
+  /* READ activity */
+  .read-story-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid #FAC775;
+    flex: 1;
+  }
+
+  .read-story-text {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    line-height: 1.8;
+    color: var(--night);
+  }
+
+  .read-story-text .rword {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 2px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .read-story-text .rword.rhl {
+    background: var(--gold);
+    color: var(--night);
+  }
+
+  .read-story-text .rword:hover {
+    background: rgba(245,200,66,0.3);
+  }
+
+  .read-controls {
+    display: flex; gap: 10px;
+  }
+
+  .btn-read-play {
+    flex: 1;
+    padding: 13px;
+    border-radius: 50px;
+    background: var(--saffron);
+    color: #fff;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  /* ASK activity */
+  .ask-question-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid #AFA9EC;
+    text-align: center;
+  }
+
+  .ask-q-label {
+    font-size: 11px;
+    color: var(--deep-purple);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .ask-q-text {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    color: var(--night);
+    line-height: 1.4;
+  }
+
+  .ask-answer-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    min-height: 80px;
+    border: 2px dashed #AFA9EC;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .ask-answer-text {
+    font-size: 16px;
+    color: #888;
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* RETELL activity */
+  .retell-prompt-img {
+    background: var(--deep-purple);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    font-size: 70px;
+    min-height: 140px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .retell-instruction {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    border: 2px solid #ED93B1;
+    text-align: center;
+  }
+
+  .retell-inst-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--night);
+    line-height: 1.4;
+  }
+
+  /* BADGE screen */
+  #badge {
+    background: var(--night);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+  }
+
+  .badge-stars { font-size: 60px; margin-bottom: 16px; animation: bounce 0.6s ease; }
+
+  @keyframes bounce {
+    0%  { transform: scale(0.3); opacity: 0; }
+    60% { transform: scale(1.2); }
+    100%{ transform: scale(1);   opacity: 1; }
+  }
+
+  .badge-title {
+    font-family: 'Lora', serif;
+    font-size: 32px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .badge-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  .badge-acts {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .badge-act {
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .badge-act.done {
+    background: var(--teal);
+    color: #fff;
+  }
+
+  /* Utility */
+  .hidden { display: none !important; }
+
+  .btn-done {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+
+  .act-color-talk   { background: #e8f5ee; }
+  .act-color-play   { background: #eeedfe; }
+  .act-color-read   { background: #fff8f0; }
+  .act-color-ask    { background: #f5f0ff; }
+  .act-color-retell { background: #fff0f5; }
+
+  .act-hdr-talk   { color: var(--teal); }
+  .act-hdr-play   { color: var(--deep-purple); }
+  .act-hdr-read   { color: var(--saffron); }
+  .act-hdr-ask    { color: var(--deep-purple); }
+  .act-hdr-retell { color: var(--pink); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     HOME SCREEN
+══════════════════════════════════ -->
+<div id="home" class="screen active">
+  <div class="home-stars" id="starsContainer"></div>
+
+  <div class="katha-logo">Katha</div>
+  <div class="katha-tagline">Stories told by your loved ones</div>
+
+  <div class="story-card">
+    <div class="story-card-label">Story 1 · Mythology</div>
+    <div class="story-card-title">Ganesha and the Moon</div>
+    <div class="story-card-sub">7 scenes · 5 activities each</div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="homeProgressBar" style="width:0%"></div>
+    </div>
+    <button class="btn-primary" onclick="startStory()">Begin story ▶</button>
+  </div>
+
+  <div class="avatar-bar">
+    <div class="avatar-circle">👵</div>
+    <div class="avatar-text">
+      <div class="avatar-name">Nani's voice</div>
+      <div class="avatar-sub">Reading this story</div>
+    </div>
+    <div class="avatar-status">Active</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     STORY SCREEN
+══════════════════════════════════ -->
+<div id="story" class="screen">
+  <div class="story-header">
+    <button class="btn-back" onclick="goHome()">←</button>
+    <span class="scene-counter" id="sceneCounter">Scene 1 of 7</span>
+    <div class="scene-dots" id="sceneDots"></div>
+  </div>
+
+  <div class="scene-image-wrap">
+    <img class="scene-image" id="sceneImg" src="" alt="Story illustration" onerror="this.style.display='none'; document.getElementById('scenePlaceholder').style.display='flex'">
+    <div class="scene-image-placeholder" id="scenePlaceholder" style="display:none"></div>
+  </div>
+
+  <div class="narration-strip">
+    <div class="narration-avatar-row">
+      <div class="narration-avatar">👵</div>
+      <span class="narration-who">Nani is reading...</span>
+    </div>
+    <div class="narration-text" id="narrationText"></div>
+    <div class="narration-controls">
+      <button class="btn-play" id="playBtn" onclick="playNarration()">
+        <svg viewBox="0 0 24 24" fill="none">
+          <polygon id="playIcon" points="6,4 20,12 6,20" fill="#1A1A4E"/>
+        </svg>
+      </button>
+      <span class="narration-hint">Tap to hear Nani read</span>
+    </div>
+  </div>
+
+  <div class="activity-section">
+    <div class="activity-label">Activities — pick any 3 to earn your badge</div>
+    <div class="activity-pills" id="activityPills">
+      <button class="pill pill-talk"   id="pill-talk"   onclick="openActivity('talk')">Talk</button>
+      <button class="pill pill-play"   id="pill-play"   onclick="openActivity('play')">Play</button>
+      <button class="pill pill-read"   id="pill-read"   onclick="openActivity('read')">Read</button>
+      <button class="pill pill-ask"    id="pill-ask"    onclick="openActivity('ask')">Ask</button>
+      <button class="pill pill-retell" id="pill-retell" onclick="openActivity('retell')">Retell</button>
+    </div>
+  </div>
+
+  <div class="scene-nav">
+    <button class="btn-nav" id="prevBtn" onclick="changeScene(-1)">← Back</button>
+    <button class="btn-nav next" id="nextBtn" onclick="changeScene(1)">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ACTIVITY: TALK
+══════════════════════════════════ -->
+<div id="act-talk" class="screen activity-screen act-color-talk">
+  <div class="act-header">
+    <button class="btn-back" onclick="closeActivity()">←</button>
+    <span class="act-header-title act-hdr-talk">Talk</span>
+  </div>
+  <div class="act-body">
+    <div class="talk-prompt-box">
+      <div class="talk-prompt-label">Say this!</div>
+      <div class="talk-prompt-text" id="talkPrompt"></div>
+    </div>
+    <div class="nani-hint" onclick="playTalkHint()">
+      <div class="narration-avatar">👵</div>
+      <span class="nani-hint-text">Tap to hear Nani say it first</span>
+    </div>
+    <div class="mic-wrap">
+      <button class="btn-mic" id="micBtn" onclick="toggleMic()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <rect x="9" y="2" width="6" height="12" rx="3" fill="white"/>
+          <path d="M5 11a7 7 0 0014 0" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <line x1="12" y1="18" x2="12" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <line x1="9" y1="22" x2="15" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="mic-label" id="micLabel">Tap to speak</div>
+    </div>
+    <div class="feedback-box" id="talkFeedback">
+      <div class="feedback-text" id="talkFeedbackText"></div>
+    </div>
+    <button class="btn-primary" onclick="completeActivity('talk')" style="margin-top:auto">I said it! ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ACTIVITY: PLAY
+══════════════════════════════════ -->
+<div id="act-play" class="screen activity-screen act-color-play">
+  <div class="act-header">
+    <button class="btn-back" onclick="closeActivity()">←</button>
+    <span class="act-header-title act-hdr-play">Play</span>
+  </div>
+  <div class="act-body">
+    <p style="font-size:15px;font-weight:700;color:var(--night);text-align:center">Match the picture to the word!</p>
+    <div class="play-grid" id="playGrid"></div>
+    <div class="play-word-row" id="playWords"></div>
+    <div class="feedback-box" id="playFeedback">
+      <div class="feedback-text" id="playFeedbackText"></div>
+    </div>
+    <button class="btn-primary" onclick="completeActivity('play')" id="playDoneBtn" style="margin-top:auto;display:none">Great job! ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ACTIVITY: READ
+══════════════════════════════════ -->
+<div id="act-read" class="screen activity-screen act-color-read">
+  <div class="act-header">
+    <button class="btn-back" onclick="closeActivity()">←</button>
+    <span class="act-header-title act-hdr-read">Read</span>
+  </div>
+  <div class="act-body">
+    <div class="read-story-box">
+      <div class="read-story-text" id="readText"></div>
+    </div>
+    <div class="read-controls">
+      <button class="btn-read-play" onclick="playReadAlong()">▶ Read with Nani</button>
+      <button class="btn-read-play" onclick="playReadAlone()" style="background:var(--night)">Read alone</button>
+    </div>
+    <button class="btn-primary" onclick="completeActivity('read')">I read it! ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ACTIVITY: ASK
+══════════════════════════════════ -->
+<div id="act-ask" class="screen activity-screen act-color-ask">
+  <div class="act-header">
+    <button class="btn-back" onclick="closeActivity()">←</button>
+    <span class="act-header-title act-hdr-ask">Ask</span>
+  </div>
+  <div class="act-body">
+    <div class="ask-question-box">
+      <div class="ask-q-label">Nani wants to know...</div>
+      <div class="ask-q-text" id="askQuestion"></div>
+    </div>
+    <div class="nani-hint" onclick="playAskHint()">
+      <div class="narration-avatar">👵</div>
+      <span class="nani-hint-text">Tap to hear the question again</span>
+    </div>
+    <div class="ask-answer-box">
+      <div class="ask-answer-text" id="askAnswerDisplay">Say your answer out loud!</div>
+    </div>
+    <button class="btn-primary" onclick="revealAskAnswer()">Show the answer</button>
+    <button class="btn-primary" onclick="completeActivity('ask')" id="askDoneBtn" style="display:none;background:var(--teal)">I answered it! ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ACTIVITY: RETELL
+══════════════════════════════════ -->
+<div id="act-retell" class="screen activity-screen act-color-retell">
+  <div class="act-header">
+    <button class="btn-back" onclick="closeActivity()">←</button>
+    <span class="act-header-title act-hdr-retell">Retell</span>
+  </div>
+  <div class="act-body">
+    <div class="retell-prompt-img" id="retellEmoji"></div>
+    <div class="retell-instruction">
+      <div class="retell-inst-text" id="retellPrompt"></div>
+    </div>
+    <div class="nani-hint">
+      <div class="narration-avatar">👵</div>
+      <span class="nani-hint-text">Use the picture to tell the story in your own words</span>
+    </div>
+    <button class="btn-primary" onclick="completeActivity('retell')" style="margin-top:auto">I told it! ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     BADGE SCREEN
+══════════════════════════════════ -->
+<div id="badge" class="screen">
+  <div class="badge-stars">⭐</div>
+  <div class="badge-title">Story badge!</div>
+  <div class="badge-sub" id="badgeSub">You completed 3 activities<br>for this scene. Amazing!</div>
+  <div class="badge-acts" id="badgeActs"></div>
+  <button class="btn-primary" onclick="changeScene(1)" style="max-width:300px;margin-bottom:12px">Next scene →</button>
+  <button class="btn-done" onclick="goHome()">Back to home</button>
+</div>
+
+<script>
+// ══════════════════════════════════
+// STORY DATA
+// ══════════════════════════════════
+const scenes = [
+  {
+    id: 1,
+    image: 'images/Scene_1.jpg',
+    placeholder: '🍬',
+    narration: "Ganesha loved sweets more than anything in the world.",
+    talk: "Ganesha loved sweets!",
+    play: {
+      items: [
+        { emoji: '🍬', label: 'Sweets', word: 'SWEETS' },
+        { emoji: '🐭', label: 'Mouse',  word: 'MOUSE'  },
+        { emoji: '🌙', label: 'Moon',   word: 'MOON'   },
+        { emoji: '🐘', label: 'Tummy',  word: 'TUMMY'  }
+      ]
+    },
+    ask: "What does Ganesha love more than anything?",
+    askAnswer: "Ganesha loves sweets!",
+    retellEmoji: '🪔🍬',
+    retell: "Look at Ganesha. What can you see? Tell me about him!"
+  },
+  {
+    id: 2,
+    image: 'images/scene_2.jpg',
+    placeholder: '🌙',
+    narration: "One night, he ate so many sweets that his big round tummy was very, very full.",
+    talk: "His tummy was very, very full!",
+    play: {
+      items: [
+        { emoji: '😋', label: 'Eating',   word: 'EATING'   },
+        { emoji: '🍮', label: 'Laddoos',  word: 'LADDOOS'  },
+        { emoji: '🌙', label: 'Night',    word: 'NIGHT'    },
+        { emoji: '🫃', label: 'Full',     word: 'FULL'     }
+      ]
+    },
+    ask: "Why was Ganesha's tummy so big?",
+    askAnswer: "He ate too many sweets!",
+    retellEmoji: '🌙🫃',
+    retell: "Ganesha's tummy is very full. What happened? Can you tell me?"
+  },
+  {
+    id: 3,
+    image: 'images/Scene_3.jpg',
+    placeholder: '🌟',
+    narration: "He climbed onto his little mouse, Mooshak, and they rode through the night sky.",
+    talk: "They rode through the night sky!",
+    play: {
+      items: [
+        { emoji: '🐭', label: 'Mooshak',  word: 'MOOSHAK'  },
+        { emoji: '⭐', label: 'Sky',      word: 'SKY'      },
+        { emoji: '🌙', label: 'Night',    word: 'NIGHT'    },
+        { emoji: '🏇', label: 'Riding',   word: 'RIDING'   }
+      ]
+    },
+    ask: "What is the name of Ganesha's mouse?",
+    askAnswer: "His mouse is called Mooshak!",
+    retellEmoji: '🐭✨',
+    retell: "Ganesha is on his mouse. Where are they going? Tell the story!"
+  },
+  {
+    id: 4,
+    image: 'images/Scene_4.jpg',
+    placeholder: '💫',
+    narration: "Suddenly, Mooshak tripped! Ganesha fell — THUMP — right onto the ground.",
+    talk: "THUMP — right onto the ground!",
+    play: {
+      items: [
+        { emoji: '😲', label: 'Surprised', word: 'SURPRISED' },
+        { emoji: '🌱', label: 'Ground',    word: 'GROUND'    },
+        { emoji: '🐭', label: 'Tripped',   word: 'TRIPPED'   },
+        { emoji: '💥', label: 'Thump',     word: 'THUMP'     }
+      ]
+    },
+    ask: "What happened to Mooshak?",
+    askAnswer: "Mooshak tripped and Ganesha fell!",
+    retellEmoji: '💥🌱',
+    retell: "Oh no! What happened here? Tell me what you see!"
+  },
+  {
+    id: 5,
+    image: 'images/Scene_5.jpg',
+    placeholder: '😂',
+    narration: "All the laddoos spilled out! And the Moon saw everything — and laughed and laughed.",
+    talk: "The Moon laughed and laughed!",
+    play: {
+      items: [
+        { emoji: '🍬', label: 'Laddoos', word: 'LADDOOS' },
+        { emoji: '😂', label: 'Laughed', word: 'LAUGHED' },
+        { emoji: '🌕', label: 'Moon',    word: 'MOON'    },
+        { emoji: '👀', label: 'Watched', word: 'WATCHED' }
+      ]
+    },
+    ask: "Who was laughing at Ganesha?",
+    askAnswer: "The Moon was laughing!",
+    retellEmoji: '🌕😂',
+    retell: "The Moon is laughing. Why? Tell me what happened!"
+  },
+  {
+    id: 6,
+    image: 'images/Scene_6.jpg',
+    placeholder: '😢',
+    narration: "Ganesha was upset. It is not kind to laugh at someone when they fall.",
+    talk: "It is not kind to laugh at someone!",
+    play: {
+      items: [
+        { emoji: '😔', label: 'Upset',   word: 'UPSET'   },
+        { emoji: '💛', label: 'Kind',    word: 'KIND'    },
+        { emoji: '😂', label: 'Laugh',   word: 'LAUGH'   },
+        { emoji: '🤝', label: 'Friends', word: 'FRIENDS' }
+      ]
+    },
+    ask: "How did Ganesha feel when the Moon laughed?",
+    askAnswer: "Ganesha felt upset and sad!",
+    retellEmoji: '😔💛',
+    retell: "Ganesha looks sad. Why? What would you do if someone laughed at you?"
+  },
+  {
+    id: 7,
+    image: 'images/scene_7.jpg',
+    placeholder: '🌑',
+    narration: "So Ganesha said to the Moon — from tonight, no one will see you shine! And the Moon went dark.",
+    talk: "No one will see you shine!",
+    play: {
+      items: [
+        { emoji: '👆', label: 'Pointed', word: 'POINTED' },
+        { emoji: '🌑', label: 'Dark',    word: 'DARK'    },
+        { emoji: '✨', label: 'Shine',   word: 'SHINE'   },
+        { emoji: '🌕', label: 'Moon',    word: 'MOON'    }
+      ]
+    },
+    ask: "What did Ganesha say to the Moon?",
+    askAnswer: "He said — no one will see you shine!",
+    retellEmoji: '🌑👆',
+    retell: "Ganesha is pointing at the Moon. What did he say? Tell the story!"
+  }
+];
+
+// ══════════════════════════════════
+// STATE
+// ══════════════════════════════════
+let currentScene = 0;
+let completedActivities = {}; // { sceneIndex: Set of activity names }
+let playingNarration = false;
+let currentUtterance = null;
+let selectedPlayCard = null;
+let playMatchCount = 0;
+
+function getCompleted(sceneIdx) {
+  if (!completedActivities[sceneIdx]) completedActivities[sceneIdx] = new Set();
+  return completedActivities[sceneIdx];
+}
+
+// ══════════════════════════════════
+// STARS (home screen)
+// ══════════════════════════════════
+function buildStars() {
+  const container = document.getElementById('starsContainer');
+  for (let i = 0; i < 30; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top  = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.width = star.style.height = (2 + Math.random() * 4) + 'px';
+    container.appendChild(star);
+  }
+}
+buildStars();
+
+// ══════════════════════════════════
+// SCREEN SWITCHING
+// ══════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  stopSpeech();
+  updateHomeProgress();
+  showScreen('home');
+}
+
+function updateHomeProgress() {
+  let totalDone = 0;
+  const total = scenes.length * 3;
+  scenes.forEach((_, i) => {
+    totalDone += Math.min(getCompleted(i).size, 3);
+  });
+  const pct = Math.round((totalDone / total) * 100);
+  document.getElementById('homeProgressBar').style.width = pct + '%';
+}
+
+// ══════════════════════════════════
+// STORY SCREEN
+// ══════════════════════════════════
+function startStory() {
+  renderScene(currentScene);
+  showScreen('story');
+}
+
+function buildDots() {
+  const container = document.getElementById('sceneDots');
+  container.innerHTML = '';
+  scenes.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'scene-dot' +
+      (i === currentScene ? ' active' : '') +
+      (i < currentScene ? ' done' : '');
+    container.appendChild(dot);
+  });
+}
+
+function renderScene(idx) {
+  const scene = scenes[idx];
+  document.getElementById('sceneCounter').textContent = `Scene ${idx + 1} of ${scenes.length}`;
+  buildDots();
+
+  // Image
+  const img = document.getElementById('sceneImg');
+  const ph  = document.getElementById('scenePlaceholder');
+  img.style.display = 'block';
+  ph.style.display  = 'none';
+  img.src = scene.image;
+  ph.textContent = scene.placeholder;
+
+  // Narration with word spans
+  const words = scene.narration.split(' ');
+  const textEl = document.getElementById('narrationText');
+  textEl.innerHTML = words.map((w, i) =>
+    `<span class="word" id="word-${i}" onclick="speakWord('${w.replace(/['"]/g, '')}')">${w} </span>`
+  ).join('');
+
+  // Reset play button
+  document.getElementById('playBtn').innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none">
+      <polygon points="6,4 20,12 6,20" fill="#1A1A4E"/>
+    </svg>`;
+  playingNarration = false;
+
+  // Activity pills — mark completed ones
+  const done = getCompleted(idx);
+  ['talk','play','read','ask','retell'].forEach(act => {
+    const pill = document.getElementById('pill-' + act);
+    pill.classList.toggle('done', done.has(act));
+  });
+
+  // Nav buttons
+  document.getElementById('prevBtn').style.opacity = idx === 0 ? '0.3' : '1';
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').textContent = idx === scenes.length - 1 ? 'Finish ✓' : 'Next →';
+}
+
+function changeScene(dir) {
+  stopSpeech();
+  const next = currentScene + dir;
+  if (next < 0) return;
+  if (next >= scenes.length) {
+    showFinalBadge();
+    return;
+  }
+  currentScene = next;
+  renderScene(currentScene);
+  showScreen('story');
+}
+
+// ══════════════════════════════════
+// TEXT-TO-SPEECH
+// ══════════════════════════════════
+function speak(text, onWord, onEnd) {
+  if (!window.speechSynthesis) return;
+  stopSpeech();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate  = 0.82;
+  utt.pitch = 1.05;
+  utt.lang  = 'en-IN';
+
+  const words = text.split(' ');
+  let wordIndex = 0;
+
+  utt.onboundary = (e) => {
+    if (e.name === 'word' && onWord) {
+      onWord(wordIndex);
+      wordIndex++;
+    }
+  };
+
+  utt.onend = () => {
+    playingNarration = false;
+    if (onEnd) onEnd();
+    document.getElementById('playBtn').innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none">
+        <polygon points="6,4 20,12 6,20" fill="#1A1A4E"/>
+      </svg>`;
+  };
+
+  currentUtterance = utt;
+  window.speechSynthesis.speak(utt);
+}
+
+function stopSpeech() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  playingNarration = false;
+  // Clear all highlights
+  document.querySelectorAll('.word.highlight, .rword.rhl').forEach(el => {
+    el.classList.remove('highlight', 'rhl');
+  });
+}
+
+function playNarration() {
+  if (playingNarration) { stopSpeech(); return; }
+  playingNarration = true;
+  document.getElementById('playBtn').innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none">
+      <rect x="6" y="4" width="4" height="16" rx="1" fill="#1A1A4E"/>
+      <rect x="14" y="4" width="4" height="16" rx="1" fill="#1A1A4E"/>
+    </svg>`;
+
+  const scene = scenes[currentScene];
+  const words = scene.narration.split(' ');
+  speak(scene.narration,
+    (i) => {
+      document.querySelectorAll('.word').forEach(el => el.classList.remove('highlight'));
+      const el = document.getElementById('word-' + i);
+      if (el) el.classList.add('highlight');
+    },
+    () => {
+      document.querySelectorAll('.word').forEach(el => el.classList.remove('highlight'));
+    }
+  );
+}
+
+function speakWord(word) {
+  const utt = new SpeechSynthesisUtterance(word);
+  utt.rate = 0.75;
+  utt.lang = 'en-IN';
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+
+// ══════════════════════════════════
+// ACTIVITIES
+// ══════════════════════════════════
+function openActivity(type) {
+  stopSpeech();
+  const scene = scenes[currentScene];
+
+  if (type === 'talk') {
+    document.getElementById('talkPrompt').textContent = '"' + scene.talk + '"';
+    document.getElementById('talkFeedback').classList.remove('show');
+    document.getElementById('micBtn').classList.remove('recording');
+    document.getElementById('micLabel').textContent = 'Tap to speak';
+    showScreen('act-talk');
+  }
+
+  if (type === 'play') {
+    buildPlayActivity(scene);
+    showScreen('act-play');
+  }
+
+  if (type === 'read') {
+    buildReadActivity(scene);
+    showScreen('act-read');
+  }
+
+  if (type === 'ask') {
+    document.getElementById('askQuestion').textContent = scene.ask;
+    document.getElementById('askAnswerDisplay').textContent = 'Say your answer out loud!';
+    document.getElementById('askAnswerDisplay').style.color = '#888';
+    document.getElementById('askDoneBtn').style.display = 'none';
+    document.querySelector('#act-ask .btn-primary').style.display = 'block';
+    showScreen('act-ask');
+  }
+
+  if (type === 'retell') {
+    document.getElementById('retellEmoji').textContent = scene.retellEmoji;
+    document.getElementById('retellPrompt').textContent = scene.retell;
+    showScreen('act-retell');
+  }
+}
+
+function closeActivity() {
+  stopSpeech();
+  showScreen('story');
+}
+
+function completeActivity(type) {
+  stopSpeech();
+  getCompleted(currentScene).add(type);
+  const pill = document.getElementById('pill-' + type);
+  if (pill) pill.classList.add('done');
+  showScreen('story');
+
+  // Check badge
+  if (getCompleted(currentScene).size >= 3) {
+    setTimeout(() => showBadge(), 400);
+  }
+}
+
+// ── TALK ──
+function playTalkHint() {
+  const scene = scenes[currentScene];
+  const utt = new SpeechSynthesisUtterance(scene.talk);
+  utt.rate = 0.78;
+  utt.lang = 'en-IN';
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+
+let micActive = false;
+function toggleMic() {
+  micActive = !micActive;
+  const btn   = document.getElementById('micBtn');
+  const label = document.getElementById('micLabel');
+  const fb    = document.getElementById('talkFeedback');
+  const fbTxt = document.getElementById('talkFeedbackText');
+
+  if (micActive) {
+    btn.classList.add('recording');
+    label.textContent = 'Listening... tap to stop';
+    fb.classList.remove('show');
+  } else {
+    btn.classList.remove('recording');
+    label.textContent = 'Tap to speak';
+    const praises = ['Amazing! 🌟', 'Wonderful! 🎉', 'Brilliant! ⭐', 'You said it! 🥳'];
+    fbTxt.textContent = praises[Math.floor(Math.random() * praises.length)];
+    fb.classList.add('show');
+  }
+}
+
+// ── PLAY ──
+function buildPlayActivity(scene) {
+  playMatchCount = 0;
+  selectedPlayCard = null;
+  document.getElementById('playFeedback').classList.remove('show');
+  document.getElementById('playDoneBtn').style.display = 'none';
+
+  const items = scene.play.items;
+  const grid  = document.getElementById('playGrid');
+  const words = document.getElementById('playWords');
+
+  grid.innerHTML = '';
+  words.innerHTML = '';
+
+  items.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'play-image-card';
+    card.dataset.word = item.word;
+    card.dataset.idx = i;
+    card.innerHTML = `<div class="play-card-emoji">${item.emoji}</div><div class="play-card-label">${item.label}</div>`;
+    card.onclick = () => selectPlayCard(card);
+    grid.appendChild(card);
+  });
+
+  // Shuffle words
+  const shuffled = [...items].sort(() => Math.random() - 0.5);
+  shuffled.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'play-word-btn';
+    btn.textContent = item.word;
+    btn.dataset.word = item.word;
+    btn.onclick = () => matchPlayWord(btn);
+    words.appendChild(btn);
+  });
+}
+
+function selectPlayCard(card) {
+  document.querySelectorAll('.play-image-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedPlayCard = card;
+  speakWord(card.dataset.word.toLowerCase());
+}
+
+function matchPlayWord(btn) {
+  if (!selectedPlayCard) {
+    document.getElementById('playFeedbackText').textContent = 'Tap a picture first!';
+    document.getElementById('playFeedback').classList.add('show');
+    return;
+  }
+
+  const correct = selectedPlayCard.dataset.word === btn.dataset.word;
+  const fb    = document.getElementById('playFeedback');
+  const fbTxt = document.getElementById('playFeedbackText');
+
+  if (correct) {
+    selectedPlayCard.classList.remove('selected');
+    selectedPlayCard.classList.add('correct');
+    btn.classList.add('used');
+    speakWord(btn.dataset.word.toLowerCase());
+    playMatchCount++;
+    selectedPlayCard = null;
+    fb.style.borderColor = 'var(--teal)';
+    fbTxt.textContent = ['Yes! ✓', 'Correct! 🌟', 'Brilliant! ⭐'][Math.floor(Math.random()*3)];
+    fb.classList.add('show');
+    if (playMatchCount >= scenes[currentScene].play.items.length) {
+      setTimeout(() => {
+        document.getElementById('playDoneBtn').style.display = 'block';
+        fbTxt.textContent = 'You matched them all! 🎉';
+      }, 600);
+    }
+  } else {
+    selectedPlayCard.classList.add('wrong');
+    setTimeout(() => {
+      selectedPlayCard.classList.remove('wrong', 'selected');
+      selectedPlayCard = null;
+    }, 700);
+    fb.style.borderColor = '#E24B4A';
+    fbTxt.textContent = 'Try again! 💪';
+    fb.classList.add('show');
+  }
+}
+
+// ── READ ──
+function buildReadActivity(scene) {
+  const words = scene.narration.split(' ');
+  const el = document.getElementById('readText');
+  el.innerHTML = words.map((w, i) =>
+    `<span class="rword" id="rword-${i}" onclick="speakWord('${w.replace(/['"]/g,'')}')">${w} </span>`
+  ).join('');
+}
+
+function playReadAlong() {
+  const scene = scenes[currentScene];
+  const words = scene.narration.split(' ');
+  speak(scene.narration,
+    (i) => {
+      document.querySelectorAll('.rword').forEach(el => el.classList.remove('rhl'));
+      const el = document.getElementById('rword-' + i);
+      if (el) el.classList.add('rhl');
+    },
+    () => {
+      document.querySelectorAll('.rword').forEach(el => el.classList.remove('rhl'));
+    }
+  );
+}
+
+function playReadAlone() {
+  stopSpeech();
+  document.querySelectorAll('.rword').forEach(el => el.classList.remove('rhl'));
+}
+
+// ── ASK ──
+function playAskHint() {
+  const scene = scenes[currentScene];
+  const utt = new SpeechSynthesisUtterance(scene.ask);
+  utt.rate = 0.78; utt.lang = 'en-IN';
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+
+function revealAskAnswer() {
+  const scene = scenes[currentScene];
+  const el = document.getElementById('askAnswerDisplay');
+  el.textContent = scene.askAnswer;
+  el.style.color = 'var(--teal)';
+  el.style.fontStyle = 'normal';
+  el.style.fontWeight = '700';
+  document.querySelector('#act-ask .btn-primary').style.display = 'none';
+  document.getElementById('askDoneBtn').style.display = 'block';
+  speakWord(scene.askAnswer);
+}
+
+// ══════════════════════════════════
+// BADGE
+// ══════════════════════════════════
+function showBadge() {
+  const done = getCompleted(currentScene);
+  const names = { talk:'Talk', play:'Play', read:'Read', ask:'Ask', retell:'Retell' };
+  const container = document.getElementById('badgeActs');
+  container.innerHTML = '';
+  Object.entries(names).forEach(([key, label]) => {
+    const el = document.createElement('div');
+    el.className = 'badge-act' + (done.has(key) ? ' done' : '');
+    el.textContent = label;
+    container.appendChild(el);
+  });
+  document.getElementById('badgeSub').textContent =
+    `You completed ${Math.min(done.size, 5)} activities\nfor Scene ${currentScene + 1}. Amazing!`;
+  showScreen('badge');
+}
+
+function showFinalBadge() {
+  document.getElementById('badgeSub').textContent = 'You finished all 7 scenes!\nGanesha would be so proud.';
+  document.getElementById('badgeActs').innerHTML = '';
+  showScreen('badge');
+}
+</script>
+</body>
+</html>
